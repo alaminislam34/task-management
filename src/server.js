@@ -30,7 +30,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // --- AUTH ROUTES ---
-
+app.get("/", (req, res) => {
+  res
+    .status(200)
+    .send(
+      "Hello world. This server is running now..............................."
+    );
+});
 // 1. Register
 app.post("/user/register", upload.single("file"), async (req, res) => {
   try {
@@ -117,13 +123,11 @@ app.patch(
         updates,
         { new: true }
       );
-      res
-        .status(200)
-        .json({
-          status: "Success",
-          message: "Profile update successful",
-          data: updatedUser,
-        });
+      res.status(200).json({
+        status: "Success",
+        message: "Profile update successful",
+        data: updatedUser,
+      });
     } catch (err) {
       res.status(500).json({ status: "Error", message: err.message });
     }
@@ -147,13 +151,11 @@ app.post("/task/create-task", checkAuth, async (req, res) => {
   try {
     const task = new Task({ ...req.body, creator_email: req.userData.email });
     await task.save();
-    res
-      .status(201)
-      .json({
-        status: "Success",
-        message: "Task created successful",
-        data: task,
-      });
+    res.status(201).json({
+      status: "Success",
+      message: "Task created successful",
+      data: task,
+    });
   } catch (err) {
     res.status(400).json({ status: "Error", message: err.message });
   }
